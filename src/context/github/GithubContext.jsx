@@ -9,6 +9,7 @@ export const GithubProvider = ({ children }) => {
   const initialState = {
     users: [],
     user: {},
+    repos: [],
     loading: false,
   };
 
@@ -24,9 +25,9 @@ export const GithubProvider = ({ children }) => {
         Authorization: `token ${GITHUB_TOKEN}`,
       },
     });
-    console.log("This is a response", response);
+    // console.log("This is a response", response);
     const { items } = await response.json(); //await response.json.item
-    console.log(items);
+    // console.log(items);
     dispatch({
       type: "GET_USERS",
       payload: items,
@@ -47,12 +48,37 @@ export const GithubProvider = ({ children }) => {
       window.location = "/notfound";
     } else {
       const data = await response.json(); //await response.json.item
-      console.log("This is data", data);
+      // console.log("This is data", data);
       dispatch({
         type: "GET_USER",
         payload: data,
       });
     }
+  };
+
+  //Fetch the repos
+  const getUserRepos = async (login) => {
+    setLoading();
+    const params = new URLSearchParams({
+      q: 'user:' + login,
+      per_page:10,
+    });
+    const response = await fetch(
+      `${GITHUB_URL}/search/repositories?${params}`,
+      {
+        headers: {
+          Authorization: `token ${GITHUB_TOKEN}`,
+        },
+      }
+    );
+    console.log(response.url);
+    // console.log(`${GITHUB_URL}/search/repositories?${params}`); 
+    const {items} = await response.json(); //await response.json.item
+    console.log("getUsersTopRepos", items);
+    dispatch({
+      type: "GET_REPOS",
+      payload: items,
+    });
   };
 
   //clear users
@@ -66,8 +92,10 @@ export const GithubProvider = ({ children }) => {
         users: state.users,
         user: state.user,
         loading: state.loading,
+        repos: state.repos,
         clearUsers,
         getUser,
+        getUserRepos,
       }}
     >
       {children}
