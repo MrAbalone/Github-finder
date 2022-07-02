@@ -24,8 +24,9 @@ export const GithubProvider = ({ children }) => {
         Authorization: `token ${GITHUB_TOKEN}`,
       },
     });
+    console.log("This is a response", response);
     const { items } = await response.json(); //await response.json.item
-    // console.log(items);
+    console.log(items);
     dispatch({
       type: "GET_USERS",
       payload: items,
@@ -46,7 +47,7 @@ export const GithubProvider = ({ children }) => {
       window.location = "/notfound";
     } else {
       const data = await response.json(); //await response.json.item
-      console.log("This is data" ,data);
+      console.log("This is data", data);
       dispatch({
         type: "GET_USER",
         payload: data,
@@ -66,7 +67,7 @@ export const GithubProvider = ({ children }) => {
         user: state.user,
         loading: state.loading,
         clearUsers,
-        getUser
+        getUser,
       }}
     >
       {children}

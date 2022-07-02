@@ -59,6 +59,23 @@ function User() {
                 </div>
               </div>
             </div>
+            <div className>
+              <div>
+                <h1 className="text-3xl card-title">
+                  {name}
+                  <div className="m1-2 mr-1 badge badge-sucess">{type}</div>
+                  {hireable && (
+                    <div className="mx-1 badge badge-info">Hireable</div>
+                  )}
+                </h1>
+                <p>{bio}</p>
+                <div className="mt-4 card-actions">
+                  <a className='btn btn-outline' href={html_url} target="_blank" rel="noreferrer">
+                    Visit Github Profile
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </>
